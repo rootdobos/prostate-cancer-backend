@@ -1,0 +1,3 @@
+[submodule "backend/data-processing-core"]
+	path = backend/data-processing-core
+	url = https://github.com/rootdobos/dissertation-source-code
