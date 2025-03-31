@@ -16,7 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views.files import list_files
+from .views.features import encode_slide_tiles
+from .views.tiles import extract_tiles_from_slide
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    path('slides/', list_files, name='slides'),
+
+    path('extract-tiles/', extract_tiles_from_slide, name='extract_tiles_from_slide'),
+
+
+    path('encode-slide-tiles/', encode_slide_tiles, name='encode_slide_tiles'),
 ]
