@@ -18,15 +18,17 @@ from django.contrib import admin
 from django.urls import path
 from .views.files import list_files
 from .views.features import encode_slide_tiles
-from .views.tiles import extract_tiles_from_slide
+from .views.tiles import extract_tiles_from_slide, get_attention_scores
 
 urlpatterns = [
     path("admin/", admin.site.urls),
 
     path('slides/', list_files, name='slides'),
 
-    path('extract-tiles/', extract_tiles_from_slide, name='extract_tiles_from_slide'),
+    path('tiles/extract', extract_tiles_from_slide,
+         name='extract_tiles_from_slide'),
 
-
-    path('encode-slide-tiles/', encode_slide_tiles, name='encode_slide_tiles'),
+    path('tiles/encode', encode_slide_tiles, name='encode_slide_tiles'),
+    path('tiles/get_attention_scores',
+         get_attention_scores, name='get_attention_scores')
 ]
