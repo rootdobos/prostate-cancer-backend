@@ -15,6 +15,9 @@ def encode_slide_tiles(request):
     extractor = os.getenv("FEATURE_ENCODING_MODEL_NAME")
     feature_dir = os.getenv("FEATURES_FOLDER")
 
+    if not os.path.exists(feature_dir):
+        os.makedirs(feature_dir)
+
     FeatureExtractionService.extract_features(
         extractor, id, tile_dir, feature_dir)
     return JsonResponse({"message": f"Extracted features from {id}"})
