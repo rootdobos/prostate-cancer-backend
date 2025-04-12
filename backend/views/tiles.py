@@ -48,7 +48,7 @@ def get_attention_scores(request):
         model_name, weights_path, features_path)
     result = {
         "label": Y_prob.argmax().item(),
-        "probabilities": Y_prob.tolist(),
+        "probabilities": Y_prob.squeeze().tolist(),
         "attention_scores": scores
     }
     return JsonResponse(result)
