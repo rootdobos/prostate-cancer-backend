@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from ..data_processing_core.preprocessing.services.tile_service import TileService
 from ..data_processing_core.deep_learning.services.attention_score_service import AttentionScoreService
 from ..data_processing_core.image_visualization.attention_visualization_service import AttentionVisualizationService
+from ..data_processing_core.deep_learning.services.file_and_data_service import FileDataService
 import os
 import shutil
 import pandas as pd
@@ -71,5 +72,5 @@ def get_attention_tiles(request):
     tiles_path = os.path.join(tiles_dir, id)
     AttentionVisualizationService.create_visualization(
         256, tiles_path, visualization_dir, attention_scores, label)
-
-    return JsonResponse({"result": "ok"})
+    response = FileDataService.get_visualized_tiles_response(visualization_dir)
+    return JsonResponse(response)
