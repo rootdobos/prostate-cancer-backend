@@ -20,6 +20,9 @@ from .views.files import list_files
 from .views.features import encode_slide_tiles
 from .views.tiles import extract_tiles_from_slide, get_attention_scores, get_attention_tiles
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
 
     path('slides/', list_files, name='slides'),
@@ -31,4 +34,4 @@ urlpatterns = [
     path('tiles/get_attention_scores',
          get_attention_scores, name='get_attention_scores'),
     path('tiles/get_attention_tiles', get_attention_tiles, name='get_attention_tiles')
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
