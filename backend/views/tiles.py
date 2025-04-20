@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse
 from ..data_processing_core.preprocessing.services.tile_service import TileService
 from ..data_processing_core.deep_learning.services.attention_score_service import AttentionScoreService
 from ..data_processing_core.image_visualization.attention_visualization_service import AttentionVisualizationService
@@ -74,3 +74,14 @@ def get_attention_tiles(request):
         256, tiles_path, visualization_dir, attention_scores, label)
     response = FileDataService.get_visualized_tiles_response(visualization_dir)
     return JsonResponse(response)
+
+
+def get_tile(request):
+    id = request.GET.get("slideId")
+    col = request.GET.get("col")
+    row = request.GET.get("row")
+    if not id or not col or not row:
+        return JsonResponse({"error": "Missing parameter"}, status=400)
+    tiles_dir = os.getenv("TILES_FOLDER")
+    tile_path = os.path.join(tiles_dir, id, f"{col}_{row}.png")
+    return FileResponse(open(tile_path, 'rb'), content_type='image/png')

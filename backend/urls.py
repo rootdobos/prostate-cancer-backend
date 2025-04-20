@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from .views.files import list_files
 from .views.features import encode_slide_tiles
-from .views.tiles import extract_tiles_from_slide, get_attention_scores, get_attention_tiles
+from .views.tiles import extract_tiles_from_slide, get_attention_scores, get_attention_tiles,get_tile
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -33,5 +33,6 @@ urlpatterns = [
     path('tiles/encode', encode_slide_tiles, name='encode_slide_tiles'),
     path('tiles/get_attention_scores',
          get_attention_scores, name='get_attention_scores'),
-    path('tiles/get_attention_tiles', get_attention_tiles, name='get_attention_tiles')
+    path('tiles/get_attention_tiles', get_attention_tiles, name='get_attention_tiles'),
+    path('tiles/get_tile', get_tile, name='get_tile')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
