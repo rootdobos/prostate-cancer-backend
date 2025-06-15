@@ -1,4 +1,8 @@
 # prostate-cancer-backend
+
+run: git submodule init
+run: git submodule update --init --recursive
+
 create a .env based on the .env.example and modify the storage directory in it (example provided in the root folder)
 create a python virtual environment: python -m venv venv
 run venv/Scripts/activate
