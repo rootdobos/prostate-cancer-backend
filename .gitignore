@@ -163,3 +163,5 @@ cython_debug/
 Scripts/
 Lib/
 pyvenv.cfg
+
+!backend/data_processing_core/

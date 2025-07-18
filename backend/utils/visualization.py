@@ -18,14 +18,23 @@ def get_intervals(model_name):
                 "4": (0, 3),
                 "5": (0, 3)
             }
+        # case "efficientnet_clamsimplesigmoid":
+        #     return {
+        #         "0": (0.5, 1),
+        #         "1": (0.5, 1),
+        #         "2": (0.5, 1),
+        #         "3": (0.5, 1),
+        #         "4": (0.5, 1),
+        #         "5": (0.5, 1)
+        #     }
         case "efficientnet_clamsimplesigmoid":
             return {
-                "0": (0.5, 1),
-                "1": (0.5, 1),
-                "2": (0.5, 1),
-                "3": (0.5, 1),
-                "4": (0.5, 1),
-                "5": (0.5, 1)
+                "0": (0, 1),
+                "1": (0, 1),
+                "2": (0, 1),
+                "3": (0, 1),
+                "4": (0, 1),
+                "5": (0, 1)
             }
         case "resnext_clamsigmoid":
             return {
