@@ -11,7 +11,8 @@ services:
   server:
     build:
       context: .
-    command: python manage.py runserver 0.0.0.0:8000
+    #command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn --bind 0.0.0.0:8000 --workers 2 backend.wsgi:application
     ports:
       - 8000:8000
     environment:
