@@ -15,18 +15,8 @@ services:
     command: gunicorn --bind 0.0.0.0:8000 --workers 2 backend.wsgi:application
     ports:
       - 8000:8000
-    environment:
-      STORAGE: /storage
-      SLIDES_FOLDER: /storage/data-source
-      TILES_FOLDER: /storage/tiles
-      FEATURES_FOLDER: /storage/features
-      FEATURE_ENCODING_MODEL_NAME: efficientnet
-      ATTENTION_WEIGHT_DIRECTORY: /storage/attention-model-weights
-      ATTENTION_MODEL_NAME: efficientnet_clamsimplesigmoid
-      ATTENTION_MODEL_WEIGHTS: effnet_clam_simple_sigmoid.pth
-      ATTENTION_MODEL_WEIGHTS_PATH: /storage/attention-model-weights/effnet_clam_simple_sigmoid.pth
-      OUTPUT_IMAGES: /storage/output_images
-      VISUALIZATION_DIRECTORY: /storage/output_images/visualization
+    env_file:
+      - docker.env
     volumes:
       - F:/storage:/storage
 # The commented out section below is an example of how to define a PostgreSQL
