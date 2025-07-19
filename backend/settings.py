@@ -62,6 +62,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://127.0.0.1:4200",
 ]
+CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
 
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.getenv("OUTPUT_IMAGES")
