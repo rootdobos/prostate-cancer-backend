@@ -13,26 +13,32 @@ import json
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
+from ..utils.lock import PerKeyLock
+
 load_dotenv()
+
+per_key_lock = PerKeyLock()
 
 
 def extract_tiles_from_slide(request):
     id = request.GET.get("slideId")
     slide_dir = os.getenv("SLIDES_FOLDER")
     output_dir = os.getenv("TILES_FOLDER")
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
     if not id:
         return JsonResponse({"error": "Missing slide id"}, status=400)
+    with per_key_lock.acquire(id):
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
-    try:
-        slide_tile_path = os.path.join(output_dir, id)
-        if os.path.exists(slide_tile_path):
-            shutil.rmtree(slide_tile_path)
-        TileService.extract_tiles(id, slide_dir, output_dir)
-        return JsonResponse({"message": f"Extracted tiles from: {id}"})
-    except Exception:
-        return JsonResponse({"error": "Error in extraction"}, status=400)
+        try:
+            slide_tile_path = os.path.join(output_dir, id)
+            if os.path.exists(slide_tile_path):
+                return JsonResponse({"message": f"Tiles are already extracted: {id}"})
+                shutil.rmtree(slide_tile_path)
+            TileService.extract_tiles(id, slide_dir, output_dir)
+            return JsonResponse({"message": f"Extracted tiles from: {id}"})
+        except Exception:
+            return JsonResponse({"error": "Error in extraction"}, status=400)
 
 
 def get_attention_scores(request):
@@ -71,11 +77,18 @@ def get_attention_tiles(request):
     tiles_dir = os.getenv("TILES_FOLDER")
     visualization_dir = os.getenv("VISUALIZATION_DIRECTORY")
     model_name = os.getenv("ATTENTION_MODEL_NAME")
-    tiles_path = os.path.join(tiles_dir, id)
-    intervals = get_intervals(model_name)
-    AttentionVisualizationService.create_visualization(
-        256, tiles_path, visualization_dir, attention_scores, label, intervals)
-    response = FileDataService.get_visualized_tiles_response(visualization_dir)
+
+    output_dir = f"{id}_{label}"
+    full_output_dir = os.path.join(visualization_dir, output_dir)
+    with per_key_lock.acquire(output_dir):
+        if not os.path.exists(full_output_dir):
+            os.makedirs(full_output_dir)
+            tiles_path = os.path.join(tiles_dir, id)
+            intervals = get_intervals(model_name)
+            AttentionVisualizationService.create_visualization(
+                256, tiles_path, full_output_dir, attention_scores, label, intervals)
+    response = FileDataService.get_visualized_tiles_response(
+        full_output_dir, output_dir)
     return JsonResponse(response)
 
 
