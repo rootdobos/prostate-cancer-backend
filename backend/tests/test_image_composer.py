@@ -1,12 +1,9 @@
-from pathlib import Path
+
 from django.test import TestCase
-import os
-import shutil
-import tempfile
-from PIL import Image
 
 from backend.data_processing_core.image_visualization.attention_visualization_service import (ImageComposer,
                                                                                               create_attention_image, interpolate_value, ATTENTION_COLORS)
+from backend.tests.util import checkPixels
 
 
 class TestImageComposer(TestCase):
@@ -32,11 +29,3 @@ class TestImageComposer(TestCase):
         self.assertEqual(interpolate_value(interval,1.5),0.75)
         self.assertEqual(interpolate_value(interval,.5),0.25)
 
-def checkPixels(image, expected_color):
-    width, height, channels = image.shape
-    for x in range(width):
-        for y in range(height):
-            for c in range(channels):
-                if image[x][y][c] != expected_color[c]:
-                    return False
-    return True
